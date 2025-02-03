@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Valentine's Forced Yes</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffebf0;
+            font-family: 'Comic Sans MS', cursive;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            transition: all 0.5s;
+        }
+
+        h1 {
+            color: #ff3366;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #yesButton {
+            font-size: 2em;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 30px;
+            background: #ff3366;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            transform-origin: center;
+        }
+
+        #noButton {
+            font-size: 1.5em;
+            padding: 15px 30px;
+            border: 2px solid #ff3366;
+            border-radius: 20px;
+            background: transparent;
+            color: #ff3366;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: all 0.3s;
+            position: absolute;
+        }
+
+        .heart {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .final-message {
+            display: none;
+            font-size: 4em;
+            color: #ff3366;
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Will you be my Valentine? 💖</h1>
+        <button id="yesButton" onclick="accept()">YES!</button>
+        <button id="noButton" onmouseover="growYes()" onclick="growYes()">No</button>
+    </div>
+
+    <script>
+        let scale = 1;
+        let clickCount = 0;
+        const messages = [
+            "Please? 🥺",
+            "Are you sure? 😢",
+            "Maybe reconsider? 💔",
+            "I'll be sad! 😭",
+            "Last chance! 😖",
+            "Okay... 😞",
+            "YAY! You said YES! 💖"
+        ];
+
+        function growYes() {
+            clickCount++;
+            scale *= 1.5;
+            
+            const yesButton = document.getElementById('yesButton');
+            const noButton = document.getElementById('noButton');
+            
+            // Grow the YES button
+            yesButton.style.transform = `scale(${scale})`;
+            yesButton.style.margin = `${scale * 10}px`;
+            
+            // Change YES text
+            if(clickCount < messages.length - 1) {
+                yesButton.textContent = messages[clickCount - 1];
+            }
+            
+            // Create floating hearts
+            createHearts();
+            
+            // Move NO button randomly
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            noButton.style.left = Math.random() * maxX + 'px';
+            noButton.style.top = Math.random() * maxY + 'px';
+            
+            // Final transformation
+            if(clickCount >= 5) {
+                yesButton.style.transform = `scale(30)`;
+                yesButton.textContent = "YES! 💖";
+                document.body.style.backgroundColor = "#ff3366";
+                noButton.style.display = 'none';
+                
+                // Show final message
+                const finalMessage = document.createElement('div');
+                finalMessage.className = 'final-message';
+                finalMessage.textContent = "I KNEW IT! 💘";
+                document.body.appendChild(finalMessage);
+                finalMessage.style.display = 'block';
+            }
+        }
+
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 95 + '%';
+            heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+            heart.style.animationDuration = Math.random() * 2 + 1 + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        function accept() {
+            document.body.innerHTML = `
+                <div style="text-align: center; animation: pulse 1s infinite">
+                    <h1 style="font-size: 4em; color: #ff3366">YAY! 💖🎉</h1>
+                    <p style="font-size: 2em;">You're the best! 😍</p>
+                    <div style="font-size: 60px">💌</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
